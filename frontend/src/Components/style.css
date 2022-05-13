@@ -1,0 +1,38 @@
+.swiper-pagination-bullets.swiper-pagination-horizontal{
+    position: absolute;
+    bottom: -4px;
+}
+.mySwiper{
+    position: relative;
+    padding-bottom: 40px;
+}
+.backendicon-hover{
+    font-weight: 900 !important;
+    color: rgb(0, 153, 97) !important;
+}
+.bottomLine{
+    display: inline-block;
+    width: 0px;
+    height: 1px;
+    border-bottom: 2px solid black;
+    position: absolute;
+left: 10px;
+bottom: -25px;
+transition: width 0.3s;
+}
+a:hover > .bottomLine{
+    width: 90%;
+    margin-left: 12px;
+}
+.services-hover{
+    font-weight: 900 !important;
+    color: rgb(72, 72,149) !important;
+}
+.techknowboxex:hover .techknowboxex>div>h3{
+    font-weight: 900;
+    color: rgb(0, 153, 97);
+}
+.swiper-pagination{
+    position: absolute;
+    bottom: -4px;
+}
