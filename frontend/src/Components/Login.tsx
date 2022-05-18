@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
 import Admin from "./Admin";
-import { useNavigate } from "react-router-dom"
-
+import { Navigate, useNavigate } from "react-router-dom"
+import { useAppDispatch, useAppSelector } from '../app/hooks';
+import { loggedin, setLogin } from '../features/login-slice';
 export default function Login() {
 
-  const [login, setLogin] = useState(false)
-
-
+//   const [login, setLogin] = useState(false)
+const loginornot = useAppSelector(state => state.login.value)
+const dispatch = useAppDispatch()
   const navigate = useNavigate()
 
   // useEffect(() => {
@@ -37,7 +38,9 @@ export default function Login() {
         console.log(res.message);
         
         if (res.message === "Valid User") {
-          setLogin(true)
+        //   setLogin(true)
+        dispatch(loggedin())
+        // dispatch(setLogin(true))
         }
         else{
           navigate("/loginError")
@@ -52,7 +55,7 @@ export default function Login() {
 
   return (
     <>
-      {login ? <Admin /> :
+      {loginornot ? <Navigate to={'/admin'} replace /> :
         
         <section className="loginformofAdmin">
               LOGIN

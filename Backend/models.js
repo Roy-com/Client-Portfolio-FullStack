@@ -29,11 +29,19 @@ const imageSchema = new mongoose.Schema({
     }
 })
 
+const collaborationsSchema = new mongoose.Schema({
+    url: {
+        type: String,
+        required: true,
+    }
+})
 const Person = new mongoose.model("information", personSchema)
 const Image = new mongoose.model("image", imageSchema)
+const Collaborations = new mongoose.model("collaborations", collaborationsSchema)
 
 
 module.exports = {
     Person: Person,
-    Image: Image
+    Image: Image,
+    Collaborations: Collaborations
 }

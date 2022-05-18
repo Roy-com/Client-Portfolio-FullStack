@@ -30,8 +30,17 @@ import {
 import Login from './Components/Login';
 import LoginError from './Components/LoginError';
 import SignupError from './Components/SignupError';
+import Admin from './Components/Admin';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { useAppDispatch, useAppSelector } from './app/hooks';
+import { loggedout } from './features/login-slice';
+import 'antd/dist/antd.css';
+// import { Navigate } from 'react-router-dom';
+// import { ToastContainer, toast } from 'react-toastify';
 const PureCounter = require('@srexi/purecounterjs');
 function App() {
+    const loginornot = useAppSelector(state => state.login.value);
   const scrollTracker = () => {
     var backtotop = document.getElementsByClassName("backtotop")[0];
     if (window.scrollY > 100) {
@@ -44,12 +53,23 @@ function App() {
     Aos.init({ duration: 2000 });
     document.addEventListener("scroll", scrollTracker);
     window.onload = function () {
-      document.getElementById("preloader")!.style.display = "none"
+        if(document.getElementById("preloader"))
+        document.getElementById("preloader")!.style.display = "none"
     };
   }, [])
   return (
     <>
-
+    <ToastContainer
+            position="top-center"
+            autoClose={5000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+            />
       <Router>
         <Routes>
           <Route path="" element={<div className="App">
@@ -75,6 +95,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/loginError" element={<LoginError />} />
           <Route path="/signupError" element={<SignupError />} />
+          <Route path="/admin" element={<Admin />} />
           <Route path='*' element={<div className="App">
             <Navbar />
             <Home />
