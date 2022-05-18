@@ -35,13 +35,21 @@ const collaborationsSchema = new mongoose.Schema({
         required: true,
     }
 })
+const certificationsSchema = new mongoose.Schema({
+    url: {
+        type: String,
+        required: true,
+    }
+})
 const Person = new mongoose.model("information", personSchema)
 const Image = new mongoose.model("image", imageSchema)
 const Collaborations = new mongoose.model("collaborations", collaborationsSchema)
+const Certifications = new mongoose.model("certifications", certificationsSchema)
 
 
 module.exports = {
     Person: Person,
     Image: Image,
-    Collaborations: Collaborations
+    Collaborations: Collaborations,
+    Certifications: Certifications
 }

@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react'
-import { Button, Table, Modal, Input } from "antd";
+import { Button, Table, Modal, Input, Spin } from "antd";
 import { useState } from "react";
 import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
 import API from '../api'
@@ -7,15 +7,17 @@ import {ImgUrl} from './type'
 export interface url{
     url: string;
 }
-export default function Colabtable() {
+export default function Colabtable(props:{uri: string}) {
     const [data,setData] = useState([[]])
     useEffect(() => {
-        API.get('/collab/all').then((res: any )=> {
+        API.get(`${props.uri}/all`).then((res: any )=> {
             console.log(res.data)
                 setData(res.data);
+                setIsLoading(false);
                 // do whatever
             })
     }, [])
+    const [isLoading, setIsLoading] = useState(true);
     const [isEditing, setIsEditing] = useState(false);
     const [isAdding, setIsAdding]   = useState(false);
     const [addData, setAddData] = useState<url>({url: ''});
@@ -86,8 +88,10 @@ export default function Colabtable() {
           okText: "Yes",
           okType: "danger",
           onOk: () => {
-                API.delete(`/collab/del/${record._id}`).then((res: any) => {
+              setIsLoading(true);
+                API.delete(`${props.uri}/del/${record._id}`).then((res: any) => {
                     setData(res.data.data)
+                    setIsLoading(false);
                 })
           },
         });
@@ -111,7 +115,9 @@ export default function Colabtable() {
   return (
       <>
     <Button onClick={onAddStudent}>Add a new URL</Button>
-        <Table columns={columns} dataSource={data}></Table>
+        <Spin tip="Loading..." spinning={isLoading}>
+            <Table columns={columns} pagination={false} dataSource={data}></Table>
+        </Spin>
         <Modal
           title={isEditing?"Edit url":"Add a new URL"}
           visible={isEditing||isAdding}
@@ -120,14 +126,17 @@ export default function Colabtable() {
             isEditing? resetEditing(): resetAdding();
           }}
           onOk={() => {
+              setIsLoading(true);
               if(isEditing){
-                    API.put('/collab/update',editingStudent).then((res: any) => {
+                    API.put(`${props.uri}/update`,editingStudent).then((res: any) => {
                         setData(res.data.data)
+                        setIsLoading(false);
                     })
               }
               else{
-                API.post('/collab/add',addData).then((res: any) => {
+                API.post(`${props.uri}/add`,addData).then((res: any) => {
                     setData(res.data.data)
+                    setIsLoading(false);
                 })
            }
             // setDataSource((pre) => {

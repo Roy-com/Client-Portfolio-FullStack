@@ -56,6 +56,8 @@ function App() {
         if(document.getElementById("preloader"))
         document.getElementById("preloader")!.style.display = "none"
     };
+    if(document.getElementById("preloader"))
+    document.getElementById("preloader")!.style.display = "none"
   }, [])
   return (
     <>

@@ -7,26 +7,29 @@ import { Autoplay, Pagination, Navigation } from "swiper";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
-
+import API from '../api';
+import { ImgUrl } from './type'
 import './style.css';
 export default function Certifications() {
 
 
-    
-    const [data,setData] = useState([])
+    const [data,setData] = useState([[]])
+    const splitd = [[]];
 
     useEffect(() => {
-        fetch('http://localhost:8000/admin/images').then((res) => res.json()).then((res) => {
-            let tmp = res.filter((ele: any, idx: any) => {
-                // console.log(ele);
-                
-                return ele.property === "certification"
-                 
-            })
-            setData(tmp)
-        }
-        ).catch((err) => console.log(err))
-
+        API.get('/certifications/all').then((res: any )=> {
+            console.log(res.data)
+            const chunkSize = 3;
+            for (let i = 0; i < res.data.length; i += chunkSize) {
+                const chunk = res.data.slice(i, i + chunkSize);
+                splitd.push(chunk);
+                console.log(splitd);
+                setData(splitd);
+                // do whatever
+            }
+        })
+        // var res= get('/collab/all')
+        // setData(res!);
     }, [])
 
     console.log(data);
@@ -55,8 +58,27 @@ export default function Certifications() {
                                     }}
                                     modules={[Autoplay, Pagination, Navigation]}
                                     className="mySwiper">
+                                                                           {data.map((item: ImgUrl[], index: number) => {
+                                    console.log(item);
+                                    if (item.length ==0)
+                                    return;
+                                    return ( <SwiperSlide key={index}>
+                                        <div className="swiper-slide">
+                                            <div className="colloelementss">
+                                                {item.map((item: any )=> {
+                                                        return(
+                                                            <div className="cooll1" key={item.url}>
+                                                                <img src={item.url} height="170" width="200" alt="" />
+                                                            </div>
+                                                        )
+                                                })}
+                                        </div>
+                                    </div>
+                                </SwiperSlide> 
+                                        )
+                                })}
                                     {/* <div className="swiper-wrassetser"> */}
-                                        <SwiperSlide>
+                                        {/* <SwiperSlide>
                                             <div className="swiper-slide">
                                                 <div className="colloelementsss">
                                                     <div className="cooll1 pas">
@@ -82,7 +104,7 @@ export default function Certifications() {
                                                     </div>
                                                 </div>
                                             </div>
-                                        </SwiperSlide>
+                                        </SwiperSlide> */}
                                     {/* </div> */}
                                     </Swiper>
                                     <div className="custom-swiper-button-next">

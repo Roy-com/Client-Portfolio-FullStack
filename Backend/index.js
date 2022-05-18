@@ -13,7 +13,7 @@ const MONGO_URL = "mongodb+srv://aryan:ermal@cluster0.7ifht.mongodb.net/myFirstD
 const Person = collections.Person
 const Image = collections.Image
 const Collaborations = collections.Collaborations
-
+const Certification = collections.Certifications
 mongoose.connect(MONGO_URL, {
     useNewUrlParser: true,
 }).then(() => {
@@ -202,7 +202,73 @@ app.delete("/collab/del/:id", (req, res) => {
     })
 })
 
+// Certification routes
+app.get("/certifications/all", (req, res) => {
+    Certification.find({}, (err, data) => {
+        if (err) {
+            res.status(500).send(err)
+        }
+        else {
+            res.status(200).send(data)
+        }
+    })
+})
+app.post("/certifications/add", (req, res) => {
+    const url = req.body.url
+    const newEntry = new Certification({ url: url })
 
+    newEntry.save().then((data) => {
+        Certification.find({}, (err, data) => {
+            if (err) {
+                res.status(500).send(err)
+            }
+            else {
+                res.status(201).send({ message: "Succefully Created a Certification", data: data })
+                // res.status(200).send(data)
+            }
+        })
+    }).catch((err) => res.status(500).send({ message: "Already exists" }))
+
+})
+app.put("/certifications/update", (req, res) => {
+    const url = req.body.url
+    const id = req.body._id
+    Certification.findOneAndUpdate({ _id: id }, { url: url }, { new: true }, (err, data) => {
+        if (err) {
+            res.status(500).send(err)
+        }
+        else {
+            Certification.find({}, (err, data) => {
+                if (err) {
+                    res.status(500).send(err)
+                }
+                else {
+                    res.status(200).send({ message: "Succefully Updated a Certification", data: data })
+                    // res.status(200).send(data)
+                }
+            })
+        }
+    })
+})
+app.delete("/certifications/del/:id", (req, res) => {
+    // const _id = req.body._id
+    Certification.deleteOne({ _id: req.params.id }, (err, data) => {
+        if (err) {
+            res.status(500).send(err)
+        }
+        else {
+            Certification.find({}, (err, data) => {
+                if (err) {
+                    res.status(500).send(err)
+                }
+                else {
+                    res.status(200).send({message: "Successfully deleted", data:data})
+                    // res.status(200).send(data)
+                }
+            })
+        }
+    })
+})
 
 const PORT = process.env.PORT || 8000
 

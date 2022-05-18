@@ -2,13 +2,14 @@ import React, { useEffect, useState } from 'react'
 import Signup from './Signup';
 import { useAppDispatch, useAppSelector } from '../app/hooks';
 import { loggedout } from '../features/login-slice';
-import { Navigate } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import { Tabs } from 'antd';
 import Colabtable from './Colabtable';
-
+import NavbarAdmin from './NavbarAdmin';
 const { TabPane } = Tabs;
 function Admin() {
+    const navigate = useNavigate();
     const loginornot = useAppSelector(state => state.login.value);
     const [data, setData] = useState([])
     const [signup, setSignup] = useState(false)
@@ -61,6 +62,7 @@ function Admin() {
         setSignup(true)
     }
     function logouthandler(e) {
+    //    navigate('/');
         dispatch(loggedout())
     }
 
@@ -73,6 +75,7 @@ function Admin() {
     return (
     
         signup ? <Signup signfunc={setSignup} /> : <>
+        <NavbarAdmin logouthandler={logouthandler}/>
         {/* <button onClick={signuphandler}>Add user</button>
             <input
                 type="text"
@@ -89,19 +92,20 @@ function Admin() {
                 return <h4 >{ele.imageURL} <button value={ele.imageURL} onClick={deleteImage}>Delete</button></h4>
             })}
             <button onClick={logouthandler}>Log Out</button> */}
+            <div className='container ml-5'>
               <Tabs defaultActiveKey="1" centered>
                     <TabPane tab="Collaborations" key="1">
                     <div className='container ml-5'>
-                        <Colabtable/>
+                        <Colabtable uri={"/collab"}/>
                     </div>
                     </TabPane>
                     <TabPane tab="Certifications" key="2">
-                    Content of Tab Pane 2
-                    </TabPane>
-                    <TabPane tab="Tab 3" key="3">
-                    Content of Tab Pane 3
+                    <div className='container ml-5'>
+                        <Colabtable uri='/certifications'/>
+                    </div>
                     </TabPane>
                 </Tabs>
+                </div>
         </>
     )
 }
