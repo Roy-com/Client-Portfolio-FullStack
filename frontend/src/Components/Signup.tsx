@@ -25,7 +25,7 @@ function Signup(props:any) {
       if (res.message === "Already exists")
         res.send(res.message)
       else {
-         props.signfunc(false)
+        navigate('/admin')
       }
     }).catch((err) => {
       navigate('/signupError')

@@ -48,6 +48,8 @@ app.get("/admin/all", (req, res) => {
         else {
             let newData = data.map((ele, idx) => {
                 let tmp = {
+                    id: ele._id,
+                    idx: idx+1,
                     name: ele.name,
                     image: ele.image
                 }
@@ -60,7 +62,38 @@ app.get("/admin/all", (req, res) => {
     })
 
 })
-
+app.delete("/admin/delete/:id", (req, res) => {
+    let id = req.params.id
+    Person.findByIdAndDelete(id, (err, data) => {
+        if (err) {
+            res.status(500).send(err)
+        }
+        else {
+            Person.find({}, (err, data) => {
+                if (err) {
+                    console.log(data);
+                    res.status(500).send(err)
+                }
+        
+                else {
+                    let newData = data.map((ele, idx) => {
+                        let tmp = {
+                            id: ele._id,
+                            idx: idx+1,
+                            name: ele.name,
+                            image: ele.image
+                        }
+                        return tmp
+                    })
+                    res.status(200).send({ data: newData })
+                }
+        
+        
+            })
+            // res.status(200).send(data)
+        }
+    })
+})
 app.get("/admin/images", (req, res) => {
     Image.find({}, (err, data) => {
         res.status(200).send(data)

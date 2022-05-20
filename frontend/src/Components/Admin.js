@@ -7,6 +7,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import { Tabs } from 'antd';
 import Colabtable from './Colabtable';
 import NavbarAdmin from './NavbarAdmin';
+import User from './User';
 const { TabPane } = Tabs;
 function Admin() {
     const navigate = useNavigate();
@@ -74,7 +75,8 @@ function Admin() {
 }
     return (
     
-        signup ? <Signup signfunc={setSignup} /> : <>
+        // signup ? <Signup signfunc={setSignup} /> : <>
+        <>
         <NavbarAdmin logouthandler={logouthandler}/>
         {/* <button onClick={signuphandler}>Add user</button>
             <input
@@ -102,6 +104,11 @@ function Admin() {
                     <TabPane tab="Certifications" key="2">
                     <div className='container ml-5'>
                         <Colabtable uri='/certifications'/>
+                    </div>
+                    </TabPane>
+                    <TabPane tab="Users" key="3">
+                    <div className='container ml-5'>
+                        <User uri='/admin'/>
                     </div>
                     </TabPane>
                 </Tabs>

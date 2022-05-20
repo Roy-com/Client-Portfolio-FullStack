@@ -36,6 +36,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { useAppDispatch, useAppSelector } from './app/hooks';
 import { loggedout } from './features/login-slice';
 import 'antd/dist/antd.css';
+import Signup from './Components/Signup';
 // import { Navigate } from 'react-router-dom';
 // import { ToastContainer, toast } from 'react-toastify';
 const PureCounter = require('@srexi/purecounterjs');
@@ -95,6 +96,7 @@ function App() {
             </a>
           </div>} />
           <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
           <Route path="/loginError" element={<LoginError />} />
           <Route path="/signupError" element={<SignupError />} />
           <Route path="/admin" element={<Admin />} />
